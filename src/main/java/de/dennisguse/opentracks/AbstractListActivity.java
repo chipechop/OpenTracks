@@ -17,15 +17,18 @@
 package de.dennisguse.opentracks;
 
 import android.content.Intent;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 import de.dennisguse.opentracks.content.data.Track;
 import de.dennisguse.opentracks.fragments.ConfirmDeleteDialogFragment;
 import de.dennisguse.opentracks.fragments.ConfirmDeleteDialogFragment.ConfirmDeleteCaller;
+import de.dennisguse.opentracks.services.TrackDeleteServiceConnection;
 import de.dennisguse.opentracks.services.TrackRecordingServiceConnection;
 import de.dennisguse.opentracks.util.IntentUtils;
 
@@ -79,10 +82,13 @@ public abstract class AbstractListActivity extends AbstractActivity implements C
         if (stopRecording) {
             getTrackRecordingServiceConnection().stopRecording(this);
         }
-        Intent intent = IntentUtils.newIntent(this, TrackDeleteActivity.class);
+        /*Intent intent = IntentUtils.newIntent(this, TrackDeleteActivity.class);
         intent.putParcelableArrayListExtra(TrackDeleteActivity.EXTRA_TRACK_IDS, new ArrayList<>(Arrays.asList(trackIds)));
         startActivityForResult(intent, DELETE_REQUEST_CODE);
-        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);*/
+        Toast.makeText(this, "Hola amigo", Toast.LENGTH_LONG).show();
+        TrackDeleteServiceConnection conn = new TrackDeleteServiceConnection(new ArrayList<>(Arrays.asList(trackIds)));
+        conn.startAndBind(this);
     }
 
     /**
